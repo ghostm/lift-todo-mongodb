@@ -10,6 +10,7 @@ import Helpers._
 import _root_.net.liftweb.mapper.{DB, ConnectionManager, Schemifier, DefaultConnectionIdentifier, StandardDBVendor}
 import _root_.java.sql.{Connection, DriverManager}
 import _root_.code.model._
+import _root_.code.db._
 
 
 /**
@@ -18,6 +19,7 @@ import _root_.code.model._
  */
 class Boot {
   def boot {
+    
     if (!DB.jndiJdbcConnAvailable_?) {
       val vendor = 
 	new StandardDBVendor(Props.get("db.driver") openOr "org.h2.Driver",
@@ -29,24 +31,22 @@ class Boot {
 
       DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
     }
-
+    
     // where to search snippet
     LiftRules.addToPackages("code")
     Schemifier.schemify(true, Schemifier.infoF _, User)
 
     // Build SiteMap
     val entries = Menu(Loc("Home", List("index"), "Home")) ::
-    Menu(Loc("Static", Link(List("static"), true, "/static/index"), 
+    Menu(Loc("Static", Link(List("static"), true, "/static/index"),
 	     "Static Content")) ::
     User.sitemap
-
     LiftRules.setSiteMap(SiteMap(entries:_*))
 
     /*
      * Show the spinny image when an Ajax call starts
      */
-    LiftRules.ajaxStart =
-      Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
+    LiftRules.ajaxStart = Full(() => LiftRules.jsArtifacts.show("ajax-loader").cmd)
 
     /*
      * Make the spinny image go away when it ends
@@ -59,6 +59,9 @@ class Boot {
     LiftRules.loggedInTest = Full(() => User.loggedIn_?)
 
     S.addAround(DB.buildLoanWrapper)
+
+	//Set up CouchDB
+    TodoDB.setup
   }
 
   /**

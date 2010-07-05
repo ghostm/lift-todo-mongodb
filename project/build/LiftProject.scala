@@ -11,6 +11,7 @@ class LiftProject(info: ProjectInfo) extends DefaultWebProject(info) {
 
   override def libraryDependencies = Set(
     "net.liftweb" % "lift-webkit" % liftVersion % "compile->default",
+    "net.liftweb" % "lift-couchdb" % liftVersion % "compile->default",
     "net.liftweb" % "lift-mapper" % liftVersion % "compile->default",
     "org.mortbay.jetty" % "jetty" % "6.1.22" % "test->default",
     "junit" % "junit" % "4.5" % "test->default",
