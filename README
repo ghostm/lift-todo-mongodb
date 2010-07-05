@@ -2,9 +2,9 @@ Install Java, Simple Build Tool, and Git
 
 Clone this repository with:
 
-git clone git://github.com/dpp/lift_sbt_prototype.git
+git clone git://github.com/ghostm/lift-todo-couchdb.git
 
-Then cd into lift_sbt_prototype and type:
+Then cd into lift-todo-couchdb and type:
 sbt
 
 At the sbt prompt, type:
@@ -13,7 +13,9 @@ update
 Then:
 jetty-run
 
+Make sure CouchDB is running
+
 Point your browser to:
 http://localhost:8080/
 
-Voila a running Lift app
+Voila: Lift's ToDo app using CouchDB
