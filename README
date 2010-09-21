@@ -18,4 +18,4 @@ Make sure MongoDB is running
 Point your browser to:
 http://localhost:8080/
 
-Voila: Lift's ToDo app using CouchDB
+Voila: Lift's ToDo app using MongoDB
