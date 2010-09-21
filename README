@@ -2,9 +2,9 @@ Install Java, Simple Build Tool, and Git
 
 Clone this repository with:
 
-git clone git://github.com/ghostm/lift-todo-couchdb.git
+git clone git://github.com/ghostm/lift-todo-mongodb.git
 
-Then cd into lift-todo-couchdb and type:
+Then cd into lift-todo-mongodb and type:
 sbt
 
 At the sbt prompt, type:
@@ -13,7 +13,7 @@ update
 Then:
 jetty-run
 
-Make sure CouchDB is running
+Make sure MongoDB is running
 
 Point your browser to:
 http://localhost:8080/

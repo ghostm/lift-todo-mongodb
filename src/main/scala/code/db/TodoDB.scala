@@ -14,31 +14,31 @@
 package code {
 package db {
 
-import net.liftweb.couchdb._
-import dispatch.{Http, StatusCode}
-import net.liftweb.common.{Failure, Full}
-import net.liftweb.json.Implicits.{int2jvalue, string2jvalue}
-import net.liftweb.json.JsonAST.{JField, JInt, JObject, JString, render}
-import net.liftweb.json.JsonDSL.{jobject2assoc, pair2Assoc, pair2jvalue}
+	import _root_.net.liftweb.mongodb._
+	import _root_.net.liftweb.util._
+	import _root_.net.liftweb.common._
+	import net.liftweb.json.DefaultFormats
+	import net.liftweb.json.JsonAST._
+	import net.liftweb.json.JsonParser._
+	import net.liftweb.json.JsonDSL._
+
+	import com.mongodb.{BasicDBObject, BasicDBObjectBuilder, DBObject}
 
 
 object TodoDB {
-  import CouchDB.defaultDatabase
+  	def setup {
+	    MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost(), "test_todo"))
+	}
 
-  val design: JObject =
-    ("language" -> "javascript") ~
-    ("views" -> (("todo_findAll" ->  ("map" -> "function(doc) { if (doc.type == 'ToDo'){emit(doc.owner, doc)};}"))))
-
-  def setup = {
-    val database = new Database("todo_couchdb")
-    try { Http(database info) } catch {
-      case StatusCode(404, _) => {
-              Http(database create)
-              Http(database.design("todo_couchdb") put design)
-      }
-    }
-    defaultDatabase = database
-  }
+	def isMongoRunning: Boolean = {
+	    try {
+	      MongoDB.use(DefaultMongoIdentifier) ( db => { db.getLastError } )
+	      true
+	    }
+	    catch {
+	      case e => false
+	    }
+	  }
 }
 
 }
