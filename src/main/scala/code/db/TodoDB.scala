@@ -24,7 +24,6 @@ package db {
 
 	import com.mongodb.{BasicDBObject, BasicDBObjectBuilder, DBObject}
 
-
 object TodoDB {
   	def setup {
 	    MongoDB.defineDb(DefaultMongoIdentifier, MongoAddress(MongoHost(), "test_todo"))

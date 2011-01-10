@@ -11,15 +11,15 @@ import net.liftweb.mongodb.record._
 import net.liftweb.mongodb.record.field._
 import net.liftweb.mongodb._
 import net.liftweb.json.JsonDSL._
-
-
                   
 class ToDo private () extends MongoRecord[ToDo] with MongoId[ToDo]{
- def meta = ToDo
- 
- object done extends BooleanField(this)
- object owner extends LongField(this)
- object priority extends IntField(this) {
+  def meta = ToDo
+
+  object ownerdocId extends ObjectIdField(this) {
+    def obj = User.find(value)
+  }
+  object done extends BooleanField(this)
+  object priority extends IntField(this) {
    override def defaultValue = 5
    override def validations = validPriority _ :: super.validations
 
@@ -43,8 +43,8 @@ object ToDo extends ToDo with MongoMetaRecord[ToDo]{
   lazy val priorityList = (1 to 10).map(v => (v.toString, v.toString))
 
   def findAll(tempOwnerBox:Box[User], excludeDone:Boolean):List[ToDo] = {
-    val tempUser = tempOwnerBox.open_!
-    val tempReturn = ToDo.findAll(("owner" -> tempUser.id.is))
+    val tempUser = tempOwnerBox.open_!    
+    val tempReturn = ToDo.findAll("ownerdocId" -> JString(tempUser.userIdAsString))
     if(excludeDone)
     	return tempReturn.filter(_.done.value == false)
 	tempReturn

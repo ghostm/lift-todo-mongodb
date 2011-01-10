@@ -32,7 +32,7 @@ class TD {
     def checkAndSave(): Unit = {
       todo.desc.set(newDesc)
       todo.priority.set(newPriorityString.toInt)
-      todo.owner.set(tempUser.id.is)
+      todo.ownerdocId.set(tempUser.id)
       println(todo+" "+todo.priority.value+" "+todo.desc.value)
       todo.validate match {
         case Nil => todo.save ; S.notice("Added "+todo.desc)
